@@ -1,0 +1,11 @@
+$ python3 ./paging-linear-translate.py -P 4k -a 1g -p 2g -n 1 -c
+------------------------------------------------------------
+ARG seed 0
+ARG address space size 1g
+ARG phys mem size 2g
+ARG page size 4k
+ARG verbose False
+ARG addresses -1
+
+Error: must use smaller sizes (less than 1 GB) for this simulation.
+[exit code: 1]

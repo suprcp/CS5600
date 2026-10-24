@@ -1,0 +1,11 @@
+$ python3 ./paging-linear-translate.py -P 1000 -a 16k -p 32k -v -c
+------------------------------------------------------------
+ARG seed 0
+ARG address space size 16k
+ARG phys mem size 32k
+ARG page size 1000
+ARG verbose True
+ARG addresses -1
+
+Error in argument: address space must be a multiple of the pagesize
+[exit code: 1]

@@ -1,0 +1,37 @@
+CASE                     RC   COMMAND
+q1_as1m                  0    -P 1k -a 1m -p 512m -v -n 0
+q1_as2m                  0    -P 1k -a 2m -p 512m -v -n 0
+q1_as4m                  0    -P 1k -a 4m -p 512m -v -n 0
+q2_ps1k                  0    -P 1k -a 1m -p 512m -v -n 0
+q2_ps2k                  0    -P 2k -a 1m -p 512m -v -n 0
+q2_ps4k                  0    -P 4k -a 1m -p 512m -v -n 0
+q3_u0                    0    -P 1k -a 16k -p 32k -v -u 0 -c
+q3_u25                   0    -P 1k -a 16k -p 32k -v -u 25 -c
+q3_u50                   0    -P 1k -a 16k -p 32k -v -u 50 -c
+q3_u75                   0    -P 1k -a 16k -p 32k -v -u 75 -c
+q3_u100                  0    -P 1k -a 16k -p 32k -v -u 100 -c
+q4_tiny                  0    -P 8 -a 32 -p 1024 -v -s 1 -c
+q4_small                 0    -P 8k -a 32k -p 1m -v -s 2 -c
+q4_hugepage              0    -P 1m -a 256m -p 512m -v -s 3 -c
+lim_as_gt_pmem           1    -P 1k -a 64k -p 32k -v -c
+lim_as_eq_pmem           1    -P 1k -a 32k -p 32k -v -c
+lim_page_gt_as           1    -P 32k -a 16k -p 64k -v -c
+lim_page_eq_as           0    -P 16k -a 16k -p 64k -v -c
+lim_page_1byte           0    -P 1 -a 16 -p 64 -v -c
+lim_smallest_valid       0    -P 1 -a 1 -p 2 -v -c
+lim_as_not_pow2          1    -P 1k -a 15k -p 32k -v -c
+lim_page_not_pow2        1    -P 1000 -a 16k -p 32k -v -c
+lim_pmem_not_pow2        0    -P 1k -a 16k -p 33k -v -c
+lim_page_zero            1    -P 0 -a 16k -p 32k -v -c
+lim_garbage_size         1    -P 1k -a abc -p 32k -v -c
+lim_page_negative        1    -P -1k -a 16k -p 32k -v -c
+lim_as_negative          1    -P 1k -a -16k -p 32k -v -c
+lim_as_1g                1    -P 4k -a 1g -p 2g -n 1 -c
+lim_max_as_512m          0    -P 4k -a 512m -p 768m -n 2 -c
+lim_u_over100            0    -P 1k -a 16k -p 32k -v -u 101 -c
+lim_u_negative           0    -P 1k -a 16k -p 32k -v -u -1 -c
+lim_n_negative           0    -P 1k -a 16k -p 32k -n -5 -c
+lim_A_in_range           0    -P 1k -a 16k -p 32k -v -c -A 0,1023,1024,16383
+lim_A_eq_asize           1    -P 1k -a 16k -p 32k -v -c -A 16384
+lim_A_minus1             0    -P 1k -a 16k -p 32k -v -c -A -1
+lim_A_hex                1    -P 1k -a 16k -p 32k -v -c -A 0x10

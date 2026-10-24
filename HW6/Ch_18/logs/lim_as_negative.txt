@@ -1,0 +1,11 @@
+$ python3 ./paging-linear-translate.py -P 1k -a -16k -p 32k -v -c
+------------------------------------------------------------
+ARG seed 0
+ARG address space size -16k
+ARG phys mem size 32k
+ARG page size 1k
+ARG verbose True
+ARG addresses -1
+
+Error: must specify a non-zero address-space size.
+[exit code: 1]

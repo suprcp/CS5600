@@ -1,0 +1,4 @@
+u=50 pmem=520k : 228 / 512 valid (44%)
+u=50 pmem=64m : 259 / 512 valid (50%)
+u=90 pmem=520k : 411 / 512 valid (80%)
+u=90 pmem=64m : 448 / 512 valid (87%)

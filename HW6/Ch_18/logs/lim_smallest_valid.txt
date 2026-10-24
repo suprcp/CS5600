@@ -1,0 +1,28 @@
+$ python3 ./paging-linear-translate.py -P 1 -a 1 -p 2 -v -c
+------------------------------------------------------------
+ARG seed 0
+ARG address space size 1
+ARG phys mem size 2
+ARG page size 1
+ARG verbose True
+ARG addresses -1
+
+
+The format of the page table is simple:
+The high-order (left-most) bit is the VALID bit.
+  If the bit is 1, the rest of the entry is the PFN.
+  If the bit is 0, the page is not valid.
+Use verbose mode (-v) if you want to print the VPN # by
+each entry of the page table.
+
+Page Table (from entry 0 down to the max size)
+  [       0]  0x80000001
+
+Virtual Address Trace
+  VA 0x00000000 (decimal:        0) --> 00000001 (decimal        1) [VPN 0]
+  VA 0x00000000 (decimal:        0) --> 00000001 (decimal        1) [VPN 0]
+  VA 0x00000000 (decimal:        0) --> 00000001 (decimal        1) [VPN 0]
+  VA 0x00000000 (decimal:        0) --> 00000001 (decimal        1) [VPN 0]
+  VA 0x00000000 (decimal:        0) --> 00000001 (decimal        1) [VPN 0]
+
+[exit code: 0]
