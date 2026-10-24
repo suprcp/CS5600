@@ -9,6 +9,7 @@
 #   MINTRIALS lower bound on trials           (default 1000)
 #   REPS      repetitions per page count      (default 5)
 #   INIT      set to "noinit" to skip pre-touching the array (Q7 experiment)
+#   CFLAGS    compiler flags (default -O2), e.g. CFLAGS=-O0 for the Q5 comparison
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -19,7 +20,8 @@ MINTRIALS=${MINTRIALS:-1000}
 REPS=${REPS:-5}
 INIT=${INIT:-}
 
-gcc -O2 -Wall -o tlb tlb.c
+CFLAGS=${CFLAGS:--O2}
+gcc $CFLAGS -Wall -o tlb tlb.c
 mkdir -p results
 OUT=results/${LABEL}.csv
 INFO=results/${LABEL}_machine.txt
@@ -34,7 +36,7 @@ INFO=results/${LABEL}_machine.txt
   elif [[ "$(uname)" == "Darwin" ]]; then
     sysctl -n machdep.cpu.brand_string hw.ncpu hw.pagesize 2>/dev/null || true
   fi
-  echo "TOTAL=$TOTAL MINTRIALS=$MINTRIALS REPS=$REPS INIT=${INIT:-init}"
+  echo "CFLAGS=$CFLAGS TOTAL=$TOTAL MINTRIALS=$MINTRIALS REPS=$REPS INIT=${INIT:-init}"
 } > "$INFO"
 
 # ---- pin to one CPU (belt and braces: tlb.c also calls sched_setaffinity) ----
