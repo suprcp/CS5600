@@ -9,6 +9,7 @@
 #   MINTRIALS lower bound on trials           (default 1000)
 #   REPS      repetitions per page count      (default 5)
 #   INIT      set to "noinit" to skip pre-touching the array (Q7 experiment)
+#   NOPIN     set to 1 to run WITHOUT pinning to one CPU (Q6 experiment)
 #   CFLAGS    compiler flags (default -O2), e.g. CFLAGS=-O0 for the Q5 comparison
 set -euo pipefail
 cd "$(dirname "$0")"
@@ -41,13 +42,16 @@ INFO=results/${LABEL}_machine.txt
 
 # ---- pin to one CPU (belt and braces: tlb.c also calls sched_setaffinity) ----
 PIN=()
-if [[ "$(uname)" == "Linux" ]] && command -v taskset >/dev/null; then
+if [[ -n "${NOPIN:-}" ]]; then
+  export TLB_NOPIN=1
+  echo "NOPIN set: not pinning to a CPU" | tee -a "$INFO"
+elif [[ "$(uname)" == "Linux" ]] && command -v taskset >/dev/null; then
   PIN=(taskset -c 0)
 else
   echo "warning: no taskset on $(uname); cannot pin to one CPU" | tee -a "$INFO"
 fi
 
-echo "label,pages,trials,ns_per_access,checksum,cpu" > "$OUT"
+echo "label,pages,trials,ns_per_access,checksum,cpu,cpu_start" > "$OUT"
 for (( p = 1; p <= MAXPAGES; p *= 2 )); do
   trials=$(( TOTAL / p ))
   (( trials < MINTRIALS )) && trials=$MINTRIALS

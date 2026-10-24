@@ -1,7 +1,9 @@
 // tlb.c - measure the average cost of touching one int per page (OSTEP ch.19)
 //
 // Usage: ./tlb <num_pages> <num_trials> [noinit]
-// Output (one CSV line): pages,trials,ns_per_access,checksum,cpu
+// Output (one CSV line): pages,trials,ns_per_access,checksum,cpu,cpu_start
+//   cpu = CPU at the end of the run, cpu_start = CPU at the start (-1 = unknown)
+// Set the environment variable TLB_NOPIN=1 to skip CPU pinning (Q6 experiment).
 //
 // Design choices (see README):
 //  * Pins itself to CPU 0 with sched_setaffinity() on Linux (Q6).
@@ -66,7 +68,8 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    pin_to_cpu(0);
+    if (getenv("TLB_NOPIN") == NULL)
+        pin_to_cpu(0);
 
     long pagesize = sysconf(_SC_PAGESIZE);       // 4096 on x86 Linux, 16384 on Apple Silicon
     long jump     = pagesize / (long)sizeof(int); // ints per page
@@ -85,6 +88,7 @@ int main(int argc, char *argv[]) {
             a[i] = 0;
     }
 
+    int cpu_start = current_cpu();
     double start = now_ns();
     for (long t = 0; t < trials; t++)
         for (long i = 0; i < n; i += jump)
@@ -96,7 +100,8 @@ int main(int argc, char *argv[]) {
         checksum += a[i];
 
     double ns_per_access = (end - start) / ((double)trials * (double)num_pages);
-    printf("%ld,%ld,%.4f,%ld,%d\n", num_pages, trials, ns_per_access, checksum, current_cpu());
+    printf("%ld,%ld,%.4f,%ld,%d,%d\n", num_pages, trials, ns_per_access, checksum,
+           current_cpu(), cpu_start);
 
     free(buf);
     return 0;
