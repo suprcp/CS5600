@@ -1,0 +1,62 @@
+===== Machine =====
+CPUs: 3
+
+===== Q1: timer =====
+gettimeofday: smallest observable change = 1 us
+gettimeofday: cost per call = 18.1 ns
+clock_gettime(MONOTONIC): reported resolution = 1 ns
+clock_gettime(MONOTONIC): smallest observable change = 41 ns
+CPUs online: 3
+
+===== Q2: precise counter (1M increments per thread) =====
+counter,1,1000000,0.0085,final=1000000
+counter,2,1000000,0.0418,final=2000000
+counter,4,1000000,0.1011,final=4000000
+counter,8,1000000,0.2809,final=8000000
+
+===== Q3a: approximate counter, S=1024, vary threads =====
+approx,1,1000000,S=1024,0.0118,global=999424,exact=1000000
+approx,2,1000000,S=1024,0.0101,global=1998848,exact=2000000
+approx,4,1000000,S=1024,0.0470,global=3998720,exact=4000000
+approx,8,1000000,S=1024,0.0525,global=7998464,exact=8000000
+
+===== Q3b: approximate counter, 4 threads, vary S =====
+approx,4,1000000,S=1,0.1800,global=4000000,exact=4000000
+approx,4,1000000,S=2,0.1058,global=4000000,exact=4000000
+approx,4,1000000,S=4,0.0952,global=4000000,exact=4000000
+approx,4,1000000,S=8,0.0679,global=4000000,exact=4000000
+approx,4,1000000,S=16,0.0541,global=4000000,exact=4000000
+approx,4,1000000,S=32,0.0468,global=4000000,exact=4000000
+approx,4,1000000,S=64,0.0430,global=4000000,exact=4000000
+approx,4,1000000,S=128,0.0340,global=3999872,exact=4000000
+approx,4,1000000,S=256,0.0461,global=3999744,exact=4000000
+approx,4,1000000,S=512,0.0185,global=3999744,exact=4000000
+approx,4,1000000,S=1024,0.0399,global=3998720,exact=4000000
+
+===== Q4: single-lock list vs hand-over-hand (1000 nodes, 2000 lookups/thread) =====
+list,single,1,size=1000,ops=2000,work=0,0.0015
+list,hoh,1,size=1000,ops=2000,work=0,0.0077
+list,single,2,size=1000,ops=2000,work=0,0.0034
+list,hoh,2,size=1000,ops=2000,work=0,0.0777
+list,single,4,size=1000,ops=2000,work=0,0.0053
+list,hoh,4,size=1000,ops=2000,work=0,0.1989
+list,single,8,size=1000,ops=2000,work=0,0.0125
+list,hoh,8,size=1000,ops=2000,work=0,0.3779
+list,single,1,size=1000,ops=2000,work=200,0.4239
+list,hoh,1,size=1000,ops=2000,work=200,0.4431
+list,single,2,size=1000,ops=2000,work=200,0.8748
+list,hoh,2,size=1000,ops=2000,work=200,0.4703
+list,single,4,size=1000,ops=2000,work=200,1.7694
+list,hoh,4,size=1000,ops=2000,work=200,0.9221
+list,single,8,size=1000,ops=2000,work=200,3.5912
+list,hoh,8,size=1000,ops=2000,work=200,2.0464
+
+===== Q5/Q6: hash table, one big lock vs per-bucket locks (1M ops/thread, 90% lookup / 10% insert) =====
+hash,single,1,ops=1000000,0.0350
+hash,bucket,1,ops=1000000,0.0420
+hash,single,2,ops=1000000,0.3645
+hash,bucket,2,ops=1000000,0.0697
+hash,single,4,ops=1000000,2.7636
+hash,bucket,4,ops=1000000,0.2409
+hash,single,8,ops=1000000,21.9555
+hash,bucket,8,ops=1000000,2.2335
